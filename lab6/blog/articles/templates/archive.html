@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Archive</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/article.css' %}">
+</head>
+<body class="archive">
+    <div class="header">
+        <img src="{% static 'img/django-logo-positive.png' %}" />
+        <div class="header-links">
+            {% if user.is_authenticated %}
+                <span class="username">{{ user.username }}</span>
+                <a href="{% url 'create_post' %}" class="header-link">New post</a>
+                <a href="#" class="header-link">Logout</a>
+            {% else %}
+                <a href="{% url 'register' %}" class="header-link">Register</a>
+                <a href="{% url 'login' %}" class="header-link">Login</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="archive">
+        {% for post in posts %}
+        <div class="one-post">
+            <h2 class="post-title">
+                <a href="{% url 'get_article' article_id=post.id %}">{{ post.title }}</a>
+            </h2>
+            <div class="article-info">
+                <div class="article-author">{{ post.author.username }}</div>
+                <div class="article-created-date">{{ post.created_date }}</div>
+            </div>
+            <p class="article-text">{{ post.get_excerpt }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+
+
+
+
