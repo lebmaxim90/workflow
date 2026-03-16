@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Архив всех статей</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/article.css' %}">
+    </head>
+    <body class="archive">
+        <div class="header">
+            <img src="{% static 'img/django-logo-positive.png' %}" />
+            <div class="header-links">
+                {% if user.is_authenticated %}
+                    <span class="username">{{ user.username }}</span>
+                    <a href="{% url 'create_post' %}" class="header-link">Новый пост</a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="header-link">Регистрация</a>
+                    <a href="{% url 'login' %}" class="header-link">Вход</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="archive">
+            {% for post in posts %}
+            <div class="one-post">
+                <h2 class="post-title">
+                    <a href="{% url 'get_article' article_id=post.id %}">{{ post.title }}</a>
+                </h2>
+                <div class="article-info">
+                    <div class="article-author">{{ post.author.username }}</div>
+                    <div class="article-created-date">{{ post.created_date }}</div>
+                </div>
+                <p class="article-text">{{ post.get_excerpt }}</p>
+                <button class="fold-button">свернуть</button>
+                <div class="one-post-shadow"></div>
+            </div>
+            {% endfor %}
+        </div>
+        <script src="{% static 'js/jquery-4.0.0.min.js' %}"></script>
+        <script src="{% static 'js/helloworld.js' %}"></script>
+        <script src="{% static 'js/fold-post.js' %}"></script>
+        <script src="{% static 'js/highlight-post.js' %}"></script>
+    </body>
+</html>
